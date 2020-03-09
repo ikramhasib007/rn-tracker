@@ -1,7 +1,10 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
+import { Easing } from 'react-native'; 
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import AccountScreen from './src/screens/AccountScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
@@ -9,17 +12,141 @@ import TrackCreateScreen from './src/screens/TrackCreateScreen';
 import TrackDetailScreen from './src/screens/TrackDetailScreen';
 import TrackListScreen from './src/screens/TrackListScreen';
 
+import { navigationRef } from './src/libs/RootNavigation';
+
 const Stack = createStackNavigator();
+const TrackStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const isLoggedIn = true;
+const isLoading = true;
+const isSignout = true;
+const userToken = '';
+
+
+
+// if (state.isLoading) {
+//   // We haven't finished checking for the token yet
+//   return <SplashScreen />;
+// }
+
+const defaultScreenOptions = {
+
+}
+
+const transitionCloseConfig = {
+  animation: 'timing',
+  config: {
+    duration: 100,
+    easing: Easing.linear
+  },
+};
+
+const transitionOpenConfig = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 100,
+    mass: 3,
+    overshootClamping: false,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Signup"
-          component={SignupScreen}
-        />
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator
+        screenOptions={{
+          gestureEnabled: true,
+          gestureDirection: "horizontal",
+          ...TransitionPresets.SlideFromRightIOS
+          // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          // transitionSpec:{
+          //   open: transitionOpenConfig,
+          //   close: transitionCloseConfig
+          // }
+        }}
+        headerMode="float"
+      >
+        {isLoggedIn ? (
+          <>
+            <Stack.Screen
+              name="TrackList"
+              component={HomeTabNavigator}
+              options={({ route }) => ({
+                headerShown: shouldHeaderBeShown(route),
+                // headerTitle: getHeaderTitle(route)
+              })}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Signin" component={SigninScreen} options={() => ({ headerShown: false })} />
+            <Stack.Screen name="Signup" component={SignupScreen} options={() => ({ headerShown: false })} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
+}
+
+function shouldHeaderBeShown(route) {
+  const routeName = route.state ? route.state.routes[route.state.index].name : 'TrackList';
+  switch(routeName) {
+    case 'TrackList':
+      return false
+  }
+}
+
+function getHeaderTitle(route) {
+  const routeName = route.state ? route.state.routes[route.state.index].name : 'TrackList';
+  switch(routeName) {
+    case 'TrackList':
+      return 'Tracks';
+    case 'TrackCreate':
+      return 'Create';      
+    case 'Account':
+      return 'Account';
+      
+  }
+}
+
+const HomeTabNavigator = ({ navigation, route }) => {
+  navigation.setOptions({ headerTitle: getHeaderTitle(route) })
+
+  return <Tab.Navigator screenOptions={({ route }) => ({
+    tabBarIcon: ({ color, size }) => {
+      let iconName;
+      if(route.name === 'TrackList') iconName = 'ios-home';
+      else if(route.name === 'TrackCreate') iconName = 'logo-rss';
+      else if(route.name === 'Account') iconName = 'ios-settings';
+      return <Ionicons name={iconName} color={color} size={size} />
+    }
+  })} >
+    <Tab.Screen name="TrackList" component={TrackListStackNavigator} />
+    <Tab.Screen name="TrackCreate" component={TrackCreateScreen} />
+    <Tab.Screen name="Account" component={AccountScreen} />
+  </Tab.Navigator>
+}
+
+const TrackListStackNavigator = ({ navigation, route }) => {
+  if(route.state) {
+    navigation.setOptions({
+      tabBarVisible: route.state.index > 0 ? false : true
+    })
+  }
+
+  return <TrackStack.Navigator
+    screenOptions={{
+      gestureEnabled: true,
+      gestureDirection: "horizontal",
+      ...TransitionPresets.SlideFromRightIOS
+    }}
+    headerMode="float"
+  >
+    <TrackStack.Screen name="TrackList" component={TrackListScreen} options={{ headerTitle: 'Tracks' }} />
+    <TrackStack.Screen name="TrackDetail" component={TrackDetailScreen} options={{ headerTitle: 'Detail' }} />
+  </TrackStack.Navigator>
 }

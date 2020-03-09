@@ -1,10 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
-export default function TrackListScreen() {
+export default function TrackListScreen({ navigation }) {
 
   return (
-    <Text>TrackListScreen</Text>
+    <View>
+      <Text style={{fontSize: 50}}>TrackListScreen</Text>
+      <Button 
+        title="Go to SignUp Screen"
+        onPress={() => navigation.navigate('TrackDetail')}
+      />
+    </View>
   )
 }
 

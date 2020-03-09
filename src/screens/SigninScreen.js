@@ -1,10 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
-export default function SigninScreen() {
+export default function SigninScreen({ navigation }) {
 
   return (
-    <Text>SigninScreen</Text>
+    <View>
+      <Text style={{fontSize: 50}}>SigninScreen</Text>
+      <Button 
+        title="Go to SignUp Screen"
+        onPress={() => navigation.navigate('Signup')}
+      />
+    </View>
   )
 }
 

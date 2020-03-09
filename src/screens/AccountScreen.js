@@ -4,7 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 export default function AccountScreen() {
 
   return (
-    <Text>AccountScreen</Text>
+    <Text style={{fontSize: 50}}>AccountScreen</Text>
   )
 }
 
