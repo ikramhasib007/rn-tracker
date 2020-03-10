@@ -1,40 +1,24 @@
-import React, { useState } from 'react';
+import React, { useContext, useLayoutEffect, useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, Input, Button } from 'react-native-elements';
-import Spacer from '../components/Spacer';
+import AuthForm from '../components/AuthForm';
+import NavLink from '../components/NavLink';
+import { Context as AuthContext } from '../context/AuthContext';
 
 export default function SigninScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { state, signin } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-      <Text h3>Sign In to for Tracker</Text>
-      <Spacer />
-      <Spacer />
-      <Input
-        label="Email"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={setEmail}
-        value={email}
+      <AuthForm
+        headerText="Sign In to for Tracker"
+        submitButtonText="Sign In"
+        errorMessage={state.errorMessage}
+        onSubmit={signin}
       />
-      <Spacer />
-      <Input
-        label="Password"
-        secureTextEntry
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={setPassword}
-        value={password}
+      <NavLink
+        text="Don't have an account? Go back to sign up."
+        routeName="Signup"
       />
-      <Spacer />
-      <Button
-        title="Sign In"
-      />
-      <Spacer />
-      <Text style={{fontSize: 18}}>Don't have an account?</Text>
-      <Text style={{fontSize: 18}}>Go back to sign up.</Text>
     </View>
   )
 }

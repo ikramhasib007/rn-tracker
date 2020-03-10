@@ -1,40 +1,24 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
-import Spacer from '../components/Spacer';
+import { Context as AuthContext } from '../context/AuthContext';
+import AuthForm from '../components/AuthForm';
+import NavLink from '../components/NavLink';
 
 export default function SignupScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { state, signup } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-      <Text h3>Sign Up to for Tracker</Text>
-      <Spacer />
-      <Spacer />
-      <Input
-        label="Email"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={setEmail}
-        value={email}
+      <AuthForm
+        headerText="Sign Up to for Tracker"
+        submitButtonText="Sign Up"
+        onSubmit={signup}
+        errorMessage={state.errorMessage}
       />
-      <Spacer />
-      <Input
-        label="Password"
-        secureTextEntry
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={setPassword}
-        value={password}
+      <NavLink
+        text="Already have an account? Sign In instead."
+        routeName="Signin"
       />
-      <Spacer />
-      <Button
-        title="Sign Up"
-      />
-      <Spacer />
-      <Text style={{fontSize: 18}}>Already have an account?</Text>
-      <Text style={{fontSize: 18}}>Sign In instead.</Text>
     </View>
   )
 }
@@ -44,6 +28,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     marginBottom: 100,
-    marginHorizontal: 20
+    marginHorizontal: 10
   }
 })

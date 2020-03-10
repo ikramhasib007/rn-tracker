@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { Easing } from 'react-native'; 
+import { Easing, ActivityIndicator, View, AsyncStorage } from 'react-native'; 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,7 +13,7 @@ import TrackDetailScreen from './src/screens/TrackDetailScreen';
 import TrackListScreen from './src/screens/TrackListScreen';
 
 import { navigationRef } from './src/libs/RootNavigation';
-import { Provider as AuthProvider } from './src/context/AuthContext';
+import { Provider as AuthProvider, Context as AuthContext } from './src/context/AuthContext';
 
 const Stack = createStackNavigator();
 const TrackStack = createStackNavigator();
@@ -22,14 +22,7 @@ const Tab = createBottomTabNavigator();
 const isSignedIn = false;
 const isLoading = true;
 const isSignout = true;
-const userToken = '';
 
-
-
-// if (state.isLoading) {
-//   // We haven't finished checking for the token yet
-//   return <SplashScreen />;
-// }
 
 const defaultScreenOptions = {
 
@@ -56,6 +49,37 @@ const transitionOpenConfig = {
 };
 
 function App() {
+  const { state, setUserToken } = React.useContext(AuthContext);
+  const [isReady, setIsReady] = React.useState(false);
+
+  React.useEffect(() => {
+    const restoreState = async () => {
+      try {
+        const userToken = await AsyncStorage.getItem('userToken');
+        if(userToken) {
+          setUserToken(userToken);
+        } else {
+          setUserToken(null);
+        }
+      } finally {
+        setIsReady(true);
+      }
+    };
+
+    if (!isReady) {
+      restoreState();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return (
+      <View style={{flex:1, justifyContent: "center"}}>
+        <ActivityIndicator size="large" color="#2ac6cc" />
+      </View>
+    )
+  }
+
+  
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
@@ -69,9 +93,10 @@ function App() {
           //   close: transitionCloseConfig
           // }
         }}
-        headerMode="float"
+        // headerMode="float"
       >
-        {isSignedIn ? (
+        {/* {false ? ( */}
+        {state.userToken ? (
           <>
             <Stack.Screen
               name="TrackList"
