@@ -13,12 +13,13 @@ import TrackDetailScreen from './src/screens/TrackDetailScreen';
 import TrackListScreen from './src/screens/TrackListScreen';
 
 import { navigationRef } from './src/libs/RootNavigation';
+import { Provider as AuthProvider } from './src/context/AuthContext';
 
 const Stack = createStackNavigator();
 const TrackStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const isLoggedIn = true;
+const isSignedIn = false;
 const isLoading = true;
 const isSignout = true;
 const userToken = '';
@@ -54,7 +55,7 @@ const transitionOpenConfig = {
   },
 };
 
-export default function App() {
+function App() {
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
@@ -70,7 +71,7 @@ export default function App() {
         }}
         headerMode="float"
       >
-        {isLoggedIn ? (
+        {isSignedIn ? (
           <>
             <Stack.Screen
               name="TrackList"
@@ -83,8 +84,8 @@ export default function App() {
           </>
         ) : (
           <>
-            <Stack.Screen name="Signin" component={SigninScreen} options={() => ({ headerShown: false })} />
             <Stack.Screen name="Signup" component={SignupScreen} options={() => ({ headerShown: false })} />
+            <Stack.Screen name="Signin" component={SigninScreen} options={() => ({ headerShown: false })} />
           </>
         )}
       </Stack.Navigator>
@@ -149,4 +150,12 @@ const TrackListStackNavigator = ({ navigation, route }) => {
     <TrackStack.Screen name="TrackList" component={TrackListScreen} options={{ headerTitle: 'Tracks' }} />
     <TrackStack.Screen name="TrackDetail" component={TrackDetailScreen} options={{ headerTitle: 'Detail' }} />
   </TrackStack.Navigator>
+}
+
+export default () => {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  )
 }
