@@ -95,7 +95,6 @@ function App() {
         }}
         // headerMode="float"
       >
-        {/* {false ? ( */}
         {state.userToken ? (
           <>
             <Stack.Screen

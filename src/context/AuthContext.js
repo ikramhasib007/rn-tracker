@@ -5,13 +5,15 @@ import trackerAPI from '../api/tracker';
 const authReducer = (state, action) => {
   switch(action.type) {
     case 'SIGNUP':
-      return { ...state, userToken: action.payload, errorMessage: '' }
+      return { ...state, userToken: action.payload, error: {}}
     case 'SIGNIN':
-      return { ...state, userToken: action.payload, errorMessage: '' }
+      return { ...state, userToken: action.payload, error: {}}
     case 'SET_USER_TOKEN':
-      return { ...state, userToken: action.payload, errorMessage: '' }
-    case 'ERROR_OCCURS':
-      return { ...state, errorMessage: action.payload }
+      return { ...state, userToken: action.payload, error: {}}
+    case 'SIGNUP_ERROR':
+      return { ...state, error: { signup: action.payload }}
+    case 'SIGNIN_ERROR':
+      return { ...state, error: { signin: action.payload }}
     default:
       return state;
   }
@@ -24,10 +26,10 @@ const signin = (dispatch) => async ({ email, password }) => {
     dispatch({ type: 'SIGNIN', payload: response.data.token });
   } catch (err) {
     if(err.response && err.response.data) return dispatch({
-      type: 'ERROR_OCCURS', payload: err.response.data.error
+      type: 'SIGNIN_ERROR', payload: err.response.data.error
     })
     dispatch({
-      type: 'ERROR_OCCURS', payload: 'Something went wrong with signin'
+      type: 'SIGNIN_ERROR', payload: 'Something went wrong with signin'
     })
   }
 }
@@ -39,10 +41,10 @@ const signup = (dispatch) => async ({ email, password }) => {
     dispatch({ type: 'SIGNUP', payload: response.data.token });
   } catch (err) {
     if(err.response && err.response.data && err.response.data.includes('duplicate')) return dispatch({
-      type: 'ERROR_OCCURS', payload: 'Email already exists'
+      type: 'SIGNUP_ERROR', payload: 'Email already exists'
     })
     dispatch({
-      type: 'ERROR_OCCURS', payload: 'Something went wrong with signup'
+      type: 'SIGNUP_ERROR', payload: 'Something went wrong with signup'
     })
   }
 }
@@ -62,6 +64,6 @@ export const { Context, Provider } = createDataContext(
   { signin, signup, signout, setUserToken },
   { 
     userToken: null,
-    errorMessage: ''
+    error: {}
   }
 )

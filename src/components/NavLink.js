@@ -8,15 +8,16 @@ export default function NavLink({ text, routeName }) {
 
   return (
     <TouchableOpacity onPress={() => RootNavigation.navigate(routeName)} >
-        <Spacer>
-          <Text style={styles.link}>{text}</Text>
-        </Spacer>
-      </TouchableOpacity>
+      <Spacer>
+        <Text style={styles.link}>{text}</Text>
+      </Spacer>
+    </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
   link: {
+    textAlign: "center",
     color: '#0059BF',
     fontSize: 16
   }
