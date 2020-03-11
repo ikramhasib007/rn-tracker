@@ -33,9 +33,7 @@ export default function SigninScreen() {
         value={password}
       />
       <Spacer />
-      {!!state.error.signin && <Spacer>
-        <Text style={styles.errorMessage}>{state.error.signin}</Text>
-      </Spacer>}
+      {!!state.error.signin && <Text style={styles.errorMessage}>{state.error.signin}</Text>}
       <Spacer>
         <Button
           title="Sign In"
@@ -60,6 +58,7 @@ const styles = StyleSheet.create({
   errorMessage: {
     fontSize: 15,
     color: 'red',
-    textAlign: "center"
+    textAlign: "center",
+    marginTop: -15
   }
 })

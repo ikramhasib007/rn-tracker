@@ -8,9 +8,7 @@ export default function NavLink({ text, routeName }) {
 
   return (
     <TouchableOpacity onPress={() => RootNavigation.navigate(routeName)} >
-      <Spacer>
-        <Text style={styles.link}>{text}</Text>
-      </Spacer>
+      <Text style={styles.link}>{text}</Text>
     </TouchableOpacity>
   )
 }

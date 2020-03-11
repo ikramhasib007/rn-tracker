@@ -33,9 +33,7 @@ export default function SignupScreen() {
         value={password}
       />
       <Spacer />
-      {!!state.error.signup && <Spacer>
-        <Text style={styles.errorMessage}>{state.error.signup}</Text>
-      </Spacer>}
+      {!!state.error.signup && <Text style={styles.errorMessage}>{state.error.signup}</Text>}
       <Spacer>
         <Button
           title="Sign Up"
@@ -60,6 +58,7 @@ const styles = StyleSheet.create({
   errorMessage: {
     fontSize: 15,
     color: 'red',
-    textAlign: "center"
+    textAlign: "center",
+    marginTop: -15
   }
 })
