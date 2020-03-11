@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-elements';
-import Spacer from './Spacer';
 import * as RootNavigation from '../libs/RootNavigation';
 
 export default function NavLink({ text, routeName }) {
