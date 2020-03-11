@@ -56,8 +56,9 @@ const signout = (dispatch) => async () => {
   dispatch({ type: "SIGNOUT" });
 }
 
-const setUserToken = (dispatch) => (userToken) => {
-  dispatch({ type: 'SET_USER_TOKEN', payload: userToken })
+const setUserToken = (dispatch) => async () => {
+  const userToken = await AsyncStorage.getItem('userToken');
+  if(userToken) dispatch({ type: 'SET_USER_TOKEN', payload: userToken });
 }
 
 export const { Context, Provider } = createDataContext(

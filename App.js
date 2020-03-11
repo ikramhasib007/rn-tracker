@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { Easing, ActivityIndicator, View, AsyncStorage } from 'react-native'; 
+import { Easing, ActivityIndicator, View } from 'react-native'; 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -18,11 +18,6 @@ import { Provider as AuthProvider, Context as AuthContext } from './src/context/
 const Stack = createStackNavigator();
 const TrackStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
-const isSignedIn = false;
-const isLoading = true;
-const isSignout = true;
-
 
 const defaultScreenOptions = {
 
@@ -55,12 +50,7 @@ function App() {
   React.useEffect(() => {
     const restoreState = async () => {
       try {
-        const userToken = await AsyncStorage.getItem('userToken');
-        if(userToken) {
-          setUserToken(userToken);
-        } else {
-          setUserToken(null);
-        }
+        await setUserToken();        
       } finally {
         setIsReady(true);
       }
