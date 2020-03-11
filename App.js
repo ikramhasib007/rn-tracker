@@ -119,9 +119,9 @@ function getHeaderTitle(route) {
   const routeName = route.state ? route.state.routes[route.state.index].name : 'TrackList';
   switch(routeName) {
     case 'TrackList':
-      return 'Tracks';
+      return 'Track List';
     case 'TrackCreate':
-      return 'Create';      
+      return 'Create a Track';      
     case 'Account':
       return 'Account';
       
@@ -161,7 +161,7 @@ const TrackListStackNavigator = ({ navigation, route }) => {
     }}
     headerMode="float"
   >
-    <TrackStack.Screen name="TrackList" component={TrackListScreen} options={{ headerTitle: 'Tracks' }} />
+    <TrackStack.Screen name="TrackList" component={TrackListScreen} options={{ headerTitle: 'Track List' }} />
     <TrackStack.Screen name="TrackDetail" component={TrackDetailScreen} options={{ headerTitle: 'Detail' }} />
   </TrackStack.Navigator>
 }
