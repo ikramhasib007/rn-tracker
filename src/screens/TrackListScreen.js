@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 export default function TrackListScreen({ navigation }) {
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={{fontSize: 50}}>TrackListScreen</Text>
       <Button 
         title="Go to SignUp Screen"
@@ -15,5 +15,7 @@ export default function TrackListScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1
+  }
 })
