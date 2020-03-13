@@ -7,7 +7,7 @@ export default function TrackListScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={{fontSize: 50}}>TrackListScreen</Text>
       <Button 
-        title="Go to SignUp Screen"
+        title="Go to TrackDetail Screen"
         onPress={() => navigation.navigate('TrackDetail')}
       />
     </View>

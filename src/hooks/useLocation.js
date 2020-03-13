@@ -6,33 +6,40 @@ import * as Permissions from 'expo-permissions';
 
 export default function (shouldTrack, callback) {
   const [err, setErr] = useState(null);
-  const [subscriber, setSubscriber] = useState(null);
-
-  async function startWatching() {
-    try {
-      let { status } = await Permissions.askAsync(Permissions.LOCATION);
-      if (status !== 'granted') return setErr('Permission to access location was denied');
-      // let location = await Location.getCurrentPositionAsync({});
-      const subscription = await Location.watchPositionAsync({
-        accuracy: Location.Accuracy.BestForNavigation,
-        timeInterval: 1000,
-        distanceInterval: 10
-      }, callback );
-      setSubscriber(subscription);
-    } catch (e) {
-      setErr(e);
-    }
-  }
 
   useEffect(() => {
-    if(Platform.OS === 'android' && !Constants.isDevice) return setErr('Oops, this will not work on Sketch in an Android emulator. Try it on your device!')
+    let subscriber = null;
+    async function startWatching() {
+      try {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') return setErr('Permission to access location was denied');
+        // let location = await Location.getCurrentPositionAsync({});
+        subscriber = await Location.watchPositionAsync({
+          accuracy: Location.Accuracy.BestForNavigation,
+          timeInterval: 1000,
+          distanceInterval: 10
+        }, callback );
+      } catch (e) {
+        setErr(e);
+      }
+    }
+
+    // if(Platform.OS === 'android' && !Constants.isDevice) {
+    //   setErr('Oops, this will not work on Sketch in an Android emulator. Try it on your device!');
+    // } else 
     if(shouldTrack) {
       startWatching();
     } else {
-      subscriber.remove();
-      setSubscriber(null);
+      if(subscriber) subscriber.remove();
+      subscriber = null;
     }
-  }, [shouldTrack]);
+
+    return function cleanup() {
+      if(subscriber) subscriber.remove();
+      subscriber = null;
+      setErr(null);
+    }
+  }, [shouldTrack, callback]);
 
   return [err]
 }

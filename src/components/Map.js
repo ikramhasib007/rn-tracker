@@ -29,8 +29,8 @@ export default function Map() {
       <Circle
         center={currentLocation.coords}
         radius={30}
-        strokeColor="rgba(22, 160, 133,1.0)"
-        fillColor="rgba(22, 160, 133,0.2)"        
+        strokeColor="rgba(41,128,185 ,1)"
+        fillColor="rgba(41,128,185 ,0.3)"        
       />
     </MapView>
   ) 
