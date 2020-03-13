@@ -15,6 +15,7 @@ import TrackListScreen from './src/screens/TrackListScreen';
 import { navigationRef } from './src/libs/RootNavigation';
 import { Provider as AuthProvider, Context as AuthContext } from './src/context/AuthContext';
 import { Provider as LocationProvider } from './src/context/LocationContext';
+import { Provider as TrackProvider } from './src/context/TrackContext';
 
 const Stack = createStackNavigator();
 const TrackStack = createStackNavigator();
@@ -169,10 +170,12 @@ const TrackListStackNavigator = ({ navigation, route }) => {
 
 export default () => {
   return (
-    <LocationProvider>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </LocationProvider>
+    <TrackProvider>
+      <LocationProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </LocationProvider>
+    </TrackProvider>
   )
 }
