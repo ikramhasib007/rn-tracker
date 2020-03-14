@@ -163,7 +163,7 @@ const TrackListStackNavigator = ({ navigation, route }) => {
     }}
     headerMode="float"
   >
-    <TrackStack.Screen name="TrackList" component={TrackListScreen} options={{ headerTitle: 'Track List' }} />
+    <TrackStack.Screen name="TrackList" component={TrackListScreen} initialParams={{ reload: true }} options={{headerTitle: 'Track List' }} />
     <TrackStack.Screen name="TrackDetail" component={TrackDetailScreen} options={{ headerTitle: 'Detail' }} />
   </TrackStack.Navigator>
 }

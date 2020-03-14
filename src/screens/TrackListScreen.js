@@ -4,15 +4,15 @@ import { ListItem } from 'react-native-elements';
 import { Context as TrackContext } from '../context/TrackContext';
 import {  useFocusEffect } from '@react-navigation/native';
 
-export default function TrackListScreen({ navigation }) {
+export default function TrackListScreen({ navigation, route }) {
   const { state: { tracklist, fetching }, fetchTracks } = useContext(TrackContext);
   
   useFocusEffect(
     useCallback(() => {
       // console.log('focus');
-      // if(!tracklist.length || (!!route.params && route.params.reload)) {
+      if(!tracklist.length || route.params.reload) {
         fetchTracks();
-      // }
+      }
       
       return () => {
         // console.log('unfocus');        
